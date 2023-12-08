@@ -88,7 +88,7 @@ public class InvitationServiceImpl implements IInvitationService {
 		}
 		response.put(AppConstants.MESSAGE, AppConstants.INVITATION_RETREIVED);
 		response.put(AppConstants.DATA_MESSAGE, present.get());
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }
