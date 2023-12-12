@@ -1,5 +1,7 @@
 package com.gapshap.app.model.chat;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.ManyToAny;
 
 import com.gapshap.app.model.User;
@@ -32,5 +34,7 @@ public class Contacts {
 	@ManyToOne
 	@JoinColumn(name="contact_user_id")
 	private User contact; 
+	
+	private LocalDateTime createdAt;
 	
 }

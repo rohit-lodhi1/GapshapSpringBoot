@@ -32,6 +32,7 @@ import com.gapshap.app.model.UserRegistration;
 import com.gapshap.app.model.UserRole;
 import com.gapshap.app.model.chat.UserActiveStatus;
 import com.gapshap.app.payload.LoginRequest;
+import com.gapshap.app.payload.ResendOtpRequest;
 import com.gapshap.app.payload.UserRegistrationRequest;
 import com.gapshap.app.payload.UserResponse;
 import com.gapshap.app.payload.VerificationRequest;
@@ -105,6 +106,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 			response.put(MESSAGE, AppConstants.USER_REGISTRATION_SUCCESS);
 			response.put(AppConstants.EMAIL_STATUS, AppConstants.VERIFICATION_EMAIL_SEND);
+			response.put(AppConstants.EMAIL, request.getEmail());
 			Optional<User> userAccount = this.userRepository.findByEmail(userRegistration.getEmail());
 			
 			if(userAccount.isPresent())
@@ -176,7 +178,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		Map<String, Object> response = new HashMap<>();
 		
 		response.put(MESSAGE,AppConstants.TOKEN_GENERATED );
-		response.put("token",token);
+		response.put(AppConstants.TOKEN,token);
 	
 		return new ResponseEntity<>(response,HttpStatus.ACCEPTED);
 	}
@@ -193,6 +195,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		
        User user = this.userRepository.findByEmail(p.getName()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
        UserResponse userResponse = new UserResponse();
+       userResponse.setId(user.getId()); 
        userResponse.setEmail(user.getEmail());
        userResponse.setPhoneNumber(user.getPhoneNumber());
        userResponse.setProfileName(user.getProfileName());
@@ -204,6 +207,45 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 		return new ResponseEntity<>(response,HttpStatus.ACCEPTED);
 	}
 
+
+	@Override
+	public ResponseEntity<?> resendOtp(ResendOtpRequest request) {
+		
+		Optional<UserRegistration> user = this.userRegistraionRepository.findByEmail(request.getEmail());
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		if(user.isEmpty()) {
+			response.put(MESSAGE, AppConstants.USER_REGISTRATION_NOT_FOUND);
+			return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+		}
+		if(user.isPresent() && user.get().getIsActive()) {
+			response.put(MESSAGE, AppConstants.USER_ALREADY_REGISTERED_WITH_EMAIL);
+			return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
+		}
+		String otp = this.otpGenerator().toString();
+		UserRegistration userRegistration = user.get();
+		userRegistration.setOtp(otp);
+		userRegistration.setUpdatedAt(LocalDateTime.now());
+
+		Boolean isSentSuccessfully = this.emailService.sendEmail(request.getEmail(), user.get().getUserName(), otp);
+
+		if (isSentSuccessfully) {
+
+			response.put(MESSAGE, AppConstants.OTP_SENT_SUCCESS);
+			response.put(AppConstants.EMAIL_STATUS, AppConstants.VERIFICATION_EMAIL_SEND);
+			response.put(AppConstants.EMAIL, request.getEmail());
+			this.userRegistraionRepository.save(userRegistration);
+		}else {
+			response.put(MESSAGE, AppConstants.USER_REGISTRATION_FAILED);
+			response.put(AppConstants.EMAIL_STATUS, AppConstants.EMAIL_SEND_STATUS_FAILED);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+
+	
 	private Integer otpGenerator() {
 		return new Random().nextInt(999999);
 	}

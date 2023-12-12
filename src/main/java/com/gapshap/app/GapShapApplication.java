@@ -1,5 +1,10 @@
 package com.gapshap.app;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +21,7 @@ public class GapShapApplication implements CommandLineRunner{
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(GapShapApplication.class, args);
 		
@@ -29,11 +35,29 @@ public class GapShapApplication implements CommandLineRunner{
 		// TODO Auto-generated method stub
 		// adding default roles
 		
+		
+		
 				Roles role = new Roles();
 				role.setId(1);
 				role.setTitle("USER");
 				if(!this.roleRepository.existsById(AppConstants.USER_ROLE_ID))
 				this.roleRepository.save(role);
+				this.createFolders();
+	}
+	
+	public void createFolders() {
+		String [] folders = {"profileImages"};
+		File file = new File(System.getProperty("user.dir")+"\\src\\main\\resources\\static\\uploads");
+		if(!file.exists()) {
+			file.mkdir();
+		}
+		for(String s:folders) {
+			file =new File(System.getProperty("user.dir")+"\\src\\main\\resources\\static\\uploads\\"+s);
+			if(!file.exists()) {
+				file.mkdir();
+			}
+			
+		}
 	}
 	
 	

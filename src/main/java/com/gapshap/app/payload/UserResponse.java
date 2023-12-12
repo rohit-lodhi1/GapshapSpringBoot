@@ -6,6 +6,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.gapshap.app.model.UserRole;
+import com.gapshap.app.model.chat.UserActiveStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
@@ -20,11 +21,15 @@ import lombok.NoArgsConstructor;
 @JsonInclude(value = Include.NON_NULL)
 public class UserResponse {
 
-private String userName;
+	private Long id;
 	
+private String userName;
+
 	private String email;
 	
 	private String password;
+	
+	private String bio;
 	
 	private String phoneNumber;
 	
@@ -37,4 +42,6 @@ private String userName;
 	 private LocalDateTime updateAt;
 	 
 	 private Set<UserRole> userRoles;
+	 
+	 private UserStatusResponse  userStatus;
 }

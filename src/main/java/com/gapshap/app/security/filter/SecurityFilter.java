@@ -33,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String token = request.getHeader("Authorization");
+		String token = request.getParameter("Authorization");
 		System.out.println("token => "+token);
 		if(Objects.nonNull(token)) {
 			String userName = jwtUtils.getUserName(token);

@@ -38,6 +38,8 @@ public class User {
 	
 	private String phoneNumber;
 	
+	private String bio;
+	
 	private String profileName;
 	
 	private Boolean isActive=true;
