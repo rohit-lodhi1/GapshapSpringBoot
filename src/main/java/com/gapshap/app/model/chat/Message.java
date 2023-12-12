@@ -44,7 +44,5 @@ public class Message {
 	
 	private LocalDateTime deliveredAt;
 	
-	@ManyToOne
-	@JoinColumn(name="conversation_id")
-	private Conversation conversation;
+	private String conversation_id;
 }

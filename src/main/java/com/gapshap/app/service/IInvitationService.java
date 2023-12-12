@@ -15,5 +15,7 @@ public interface IInvitationService {
 	ResponseEntity<?> updateInvitaion(@RequestBody UpdateInvitationRequest request);
 	
 	ResponseEntity<?> getInvitationBySenderAndRecipient(@RequestBody InvitationSendRequest request);
+
+	ResponseEntity<?> deleteInvitaion(Long id);
 	
 }

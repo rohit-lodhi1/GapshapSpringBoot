@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import com.gapshap.app.model.User;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -18,7 +20,10 @@ import lombok.NoArgsConstructor;
 public class Conversation {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	private String conversationId;
 	
 	@ManyToOne
 	private User sender;

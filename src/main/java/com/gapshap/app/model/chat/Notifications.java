@@ -38,5 +38,7 @@ public class Notifications {
 	
 	private LocalDateTime time;
 	
-	private Boolean isSeen;
+	private Boolean isSeen=false;
+	
+	private Boolean isClear=false;
 }

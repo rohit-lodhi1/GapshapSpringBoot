@@ -51,7 +51,8 @@ public class SecurityConfig {
 		httpSecurity.csrf().disable();
 		
 		httpSecurity.authorizeRequests()
-		            .requestMatchers("/gapshap/auth/**").permitAll()
+		            .requestMatchers("/gapshap/auth/**","/ws/**").permitAll()
+		            
 		            .anyRequest()
 		            .authenticated()
 		            .and()
