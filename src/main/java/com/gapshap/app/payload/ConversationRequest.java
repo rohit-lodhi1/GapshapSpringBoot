@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConversationRequest {
 	
-	private Long sender;
-	private Long recipient;
+	private String sender;
+	private String recipient;
 }

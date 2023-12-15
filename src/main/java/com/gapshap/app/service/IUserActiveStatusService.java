@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.gapshap.app.constants.UserStatus;
 import com.gapshap.app.model.chat.UserActiveStatus;
+import com.gapshap.app.payload.UserStatusRequest;
 
 public interface IUserActiveStatusService {
 
@@ -13,5 +14,5 @@ public interface IUserActiveStatusService {
 
 	ResponseEntity<?> getUserStatus(Long id);
 
-	UserStatus updateUserStatus(String email, UserStatus online);
+	UserStatus updateUserStatus(UserStatusRequest request);
 }

@@ -17,9 +17,9 @@ public class NotificationRequest {
 	
 	private Long id;
 	
-	private Long sender;
+	private String sender;
 
-	private Long recipient;
+	private String recipient;
 
 	private String message;
 

@@ -38,8 +38,8 @@ public class NotificationServiceImpl implements INotificationService{
 	public ResponseEntity<?> sendNotification(NotificationRequest request) {
 		Map<String, Object> response = new HashMap<>();
 		 Notifications notification = new Notifications();
-		 User sender= this.userRepository.findById(request.getSender()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
-		 User recipient= this.userRepository.findById(request.getSender()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
+		 User sender= this.userRepository.findByEmail(request.getSender()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
+		 User recipient= this.userRepository.findByEmail(request.getSender()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
 		 notification.setSender(sender);
 		 notification.setRecipient(recipient);
 		 notification.setTime(LocalDateTime.now());

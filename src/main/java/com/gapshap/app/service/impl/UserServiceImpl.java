@@ -80,9 +80,12 @@ public class UserServiceImpl implements IUserService,UserDetailsService{
 		response.setEmail(user.getEmail());
 		
 		UserStatusResponse statusRes = new UserStatusResponse();
+		if(Objects.nonNull(user.getUserStatus().getLastSeen()))
 		statusRes.setLastSeen(user.getUserStatus().getLastSeen().toString());
 		statusRes.setIsOnline(user.getUserStatus().getIsOnline());
 		statusRes.setId(user.getUserStatus().getId());
+		if(Objects.nonNull(user.getUserStatus().getLastSeen()))
+		statusRes.setStatus(user.getUserStatus().getStatus().toString());
 		response.setUserStatus(statusRes);
 		return response;
 	}

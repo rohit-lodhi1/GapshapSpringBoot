@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,9 @@ public class ChatController {
 		this.messagingTemplate.convertAndSend("/user/"+messageRequest.getConversationId(),messageRequest);
 		return this.messageService.saveMessage(messageRequest);
 	}
+
+	
+	
 	
 	
 }

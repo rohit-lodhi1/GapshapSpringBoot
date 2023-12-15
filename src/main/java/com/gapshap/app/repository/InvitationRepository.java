@@ -14,6 +14,7 @@ import com.gapshap.app.model.chat.InvitationRequest;
 @Repository
 public interface InvitationRepository extends JpaRepository<InvitationRequest, Long>{
 
+	
 	Optional<InvitationRequest> findBySenderAndRecipient(User sender,User recipient);
 	
 	Page<InvitationRequest> findByRecipientAndRequestStatusOrderByCreatedAtDesc(User recipient,InvitationStatus status,Pageable page);

@@ -9,6 +9,6 @@ import com.gapshap.app.model.chat.Message;
 
 public interface MessageRepository extends JpaRepository<Message, Long>{
 
-	@Query("SELECT m FROM Message m WHERE m.sender.id=:sender AND m.recipient.id=:recipient")
-	List<Message> findBySenderAndRecipient(Long sender,Long recipient);
+	@Query("SELECT m FROM Message m WHERE m.sender.email=:sender AND m.recipient.email=:recipient ORDER BY m.sentAt DESC")
+	List<Message> findBySenderAndRecipient(String sender,String recipient);
 }
