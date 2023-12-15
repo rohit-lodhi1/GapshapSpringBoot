@@ -18,9 +18,9 @@ public class MessageRequest {
 private String message;
 	
 	
-	private Long sender;
+	private String sender;
 
-	private Long recipient;
+	private String recipient;
 	
 	private String conversationId;
 

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -23,6 +24,7 @@ import com.gapshap.app.constants.UserStatus;
 import com.gapshap.app.model.chat.UserActiveStatus;
 import com.gapshap.app.payload.PageReqst;
 import com.gapshap.app.payload.UserRequest;
+import com.gapshap.app.payload.UserStatusRequest;
 import com.gapshap.app.service.IUserActiveStatusService;
 import com.gapshap.app.service.IUserService;
 
@@ -68,24 +70,17 @@ public class UserController {
 		return this.statusService.getUserStatus(id);
 	}
 	
-	@MessageMapping("/status/online")
-	public String updateStatusOnline(@Payload String email){
-		 UserStatus status = this.statusService.updateUserStatus(email,UserStatus.ONLINE);
-		this.messageTemplate.convertAndSend(AppConstants.STATUS_DESTINATION,email +" "+status.toString() );
-		return  status.toString();
-	}
-
-	@MessageMapping("/status/offline")
-	public String updateStatusOffline(@Payload String email){
-		 UserStatus status = this.statusService.updateUserStatus(email,UserStatus.OFFILNE);
-		this.messageTemplate.convertAndSend(AppConstants.STATUS_DESTINATION,email +" "+status.toString() );
-		return  status.toString();
+	@MessageMapping("/status")
+	public ResponseEntity<?> updateStatusOnline(@Payload UserStatusRequest request){
+		 UserStatus status = this.statusService.updateUserStatus(request);
+		this.messageTemplate.convertAndSend(AppConstants.STATUS_DESTINATION,request);
+		return  new ResponseEntity<>(request,HttpStatus.OK);
 	}
 	
 	@MessageMapping("/search")
 	public ResponseEntity<?> getUserByEmailOrName(@Payload String value){
 		ResponseEntity<?> response = this.userService.getUserByEmailOrUserName(value);
-		this.messageTemplate.convertAndSend("/user/open/search", response);
+		this.messageTemplate.convertAndSend("/user/open/search", response.getBody());
 		return response;
 	}
 }

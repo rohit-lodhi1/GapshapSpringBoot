@@ -54,11 +54,11 @@ public class InvitationServiceImpl implements IInvitationService {
 		invitation.setCreatedAt(LocalDateTime.now());
 		invitation.setRequestStatus(InvitationStatus.NEW);
 
-		User sender = this.userRepository.findById(request.getSender())
+		User sender = this.userRepository.findByEmail(request.getSender())
 				.orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
 		invitation.setSender(sender);
 
-		User recipient = this.userRepository.findById(request.getRecipient())
+		User recipient = this.userRepository.findByEmail(request.getRecipient())
 				.orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
 		invitation.setRecipient(recipient);
 		response.put(AppConstants.MESSAGE, AppConstants.INVITATION_SENT);
@@ -120,10 +120,12 @@ public class InvitationServiceImpl implements IInvitationService {
 	public ResponseEntity<?> getInvitationBySenderAndRecipient(InvitationSendRequest request) {
 
 		Map<String, Object> response = new HashMap<>();
-		User sender = new User();
-		sender.setId(request.getSender());
-		User recipient = new User();
-		recipient.setId(request.getRecipient());
+		User sender = this.userRepository.findByEmail(request.getSender())
+				.orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
+	
+
+		User recipient = this.userRepository.findByEmail(request.getRecipient())
+				.orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
 
 		Optional<InvitationRequest> present = this.invitationRepository.findBySenderAndRecipient(sender, recipient);
 		if (present.isEmpty()) {

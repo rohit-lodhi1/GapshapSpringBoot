@@ -6,16 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserStatusResponse {
-
-private Long id;
+public class ContactRequest {
 	
-	private String lastSeen;
+	private String owner;
 	
-	private Boolean isOnline;
-	
-	private String status;
+	private String contact; 
 }

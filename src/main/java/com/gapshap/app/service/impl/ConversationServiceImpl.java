@@ -36,11 +36,11 @@ public class ConversationServiceImpl implements IConversationService {
 		Map<String, Object> response = new HashMap<>();
           
 		User sender = this.userRepository.findByEmail(p.getName()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
-		User recipient = userRepository.findById(request.getRecipient())
+		User recipient = userRepository.findByEmail(request.getRecipient())
 		.orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
 		
 		Optional<Conversation> conversation = this.conversationRepository
-				.findBySenderAndRecipient(sender.getId(), recipient.getId());
+				.findBySenderAndRecipient(sender.getEmail(), recipient.getEmail());
 		if (conversation.isPresent()) {
 			response.put(AppConstants.MESSAGE, AppConstants.CONVERSATION_RETREIVED);
 			response.put(AppConstants.DATA_MESSAGE, conversation.get());
@@ -71,7 +71,7 @@ public class ConversationServiceImpl implements IConversationService {
 		Map<String, Object> response = new HashMap<>();
 		User sender = this.userRepository.findByEmail(p.getName()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
 		Optional<Conversation> conversation = this.conversationRepository
-				.findBySenderAndRecipient(sender.getId(), request.getRecipient());
+				.findBySenderAndRecipient(sender.getEmail(), request.getRecipient());
         
 		if(conversation.isPresent()) {
 		
@@ -87,7 +87,7 @@ public class ConversationServiceImpl implements IConversationService {
 	@Override
 	public ResponseEntity<?> deleteConversation(ConversationRequest request,Principal p) {
 		User sender = this.userRepository.findByEmail(p.getName()).orElseThrow(() -> new UserNotFoundException(AppConstants.USER_NOT_FOUND));
-		Conversation conversation = this.conversationRepository.findBySenderAndRecipient(sender.getId(), request.getRecipient()).orElseThrow(() -> new ResourceNotFoundException(AppConstants.CONVERSATION_NOT_FOUND));
+		Conversation conversation = this.conversationRepository.findBySenderAndRecipient(sender.getEmail(), request.getRecipient()).orElseThrow(() -> new ResourceNotFoundException(AppConstants.CONVERSATION_NOT_FOUND));
 		this.conversationRepository.delete(conversation);
 		Map<String, Object> response = new HashMap<>();
 		response.put(AppConstants.MESSAGE, AppConstants.CONVERSATION_DELETED_SUCCESS);

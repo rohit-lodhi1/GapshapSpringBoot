@@ -15,6 +15,6 @@ public interface IConversationService {
 
 	ResponseEntity<?> deleteConversation(ConversationRequest request, Principal p);
 
-
+    
 	
 }

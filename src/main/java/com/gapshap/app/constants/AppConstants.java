@@ -68,6 +68,7 @@ public class AppConstants {
 	
 	public static final String MESSAGE_RETERIVED ="Message retreived successfully";
 	public static final String STATUS_RETERIVED ="Status retreived successfully";
+	public static final String CONTACT_RETRIEVED ="Contact retreived successfully";
 	
 	
 	

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InvitationSendRequest {
 
-	private Long sender;
+	private String sender;
 	
-	private Long recipient;
+	private String recipient;
 }
